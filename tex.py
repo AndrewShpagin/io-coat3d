@@ -407,68 +407,42 @@ def createnodes(active_mat,texcoat, create_group_node, objekti, ind, is_new, udi
 
         # READ DATA.JSON FILE
         platform = os.sys.platform
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        json_address = os.path.join(current_dir, "data.json")
 
-        if(platform == 'darwin'):  
-            #json_address = os.path.dirname(bpy.app.binary_path) + os.sep + str(bpy.app.version[0]) + '.' + str(bpy.app.version[1]) + os.sep + 'scripts' + os.sep + 'addons' + os.sep + 'io_coat3D' + os.sep + 'data.json'
-            json_address = os.path.join(
-                os.path.expanduser('~'),
-                'AppData',
-                'Roaming',
-                'Blender Foundation',
-                'Blender',
-                f"{bpy.app.version[0]}.{bpy.app.version[1]}",
-                'extensions',
-                'blender_org',
-                'coat_applink',
-                'data.json'
-            )
-            json_address = json_address.replace('MacOS', 'Resources')
+        try:
+            with open(json_address, encoding='utf-8') as data_file:
+                data = json.loads(data_file.read())
 
-        else:
-            #json_address = os.path.dirname(bpy.app.binary_path) + os.sep + str(bpy.app.version[0]) + '.' + str(bpy.app.version[1]) + os.sep + 'scripts' + os.sep + 'addons' + os.sep + 'io_coat3D' + os.sep + 'data.json'
-            json_address = os.path.join(
-                os.path.expanduser('~'),
-                'AppData',
-                'Roaming',
-                'Blender Foundation',
-                'Blender',
-                f"{bpy.app.version[0]}.{bpy.app.version[1]}",
-                'extensions',
-                'blender_org',
-                'coat_applink',
-                'data.json'
-            )
+            if(out_mat.inputs['Surface'].is_linked == True):
+                if(bring_color == True and texcoat['color'] != []):
+                    CreateTextureLine(data['color'], act_material, main_mat, texcoat, coat3D, notegroup,
+                                    main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
 
-        with open(json_address, encoding='utf-8') as data_file:
-            data = json.loads(data_file.read())
+                if(bring_metalness == True and texcoat['metalness'] != []):
+                    CreateTextureLine(data['metalness'], act_material, main_mat, texcoat, coat3D, notegroup,
+                                    main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
 
-        if(out_mat.inputs['Surface'].is_linked == True):
-            if(bring_color == True and texcoat['color'] != []):
-                CreateTextureLine(data['color'], act_material, main_mat, texcoat, coat3D, notegroup,
-                                  main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
+                if(bring_roughness == True and texcoat['rough'] != []):
+                    CreateTextureLine(data['rough'], act_material, main_mat, texcoat, coat3D, notegroup,
+                                    main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
 
-            if(bring_metalness == True and texcoat['metalness'] != []):
-                CreateTextureLine(data['metalness'], act_material, main_mat, texcoat, coat3D, notegroup,
-                                  main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
+                if(bring_normal == True and texcoat['nmap'] != []):
+                    CreateTextureLine(data['nmap'], act_material, main_mat, texcoat, coat3D, notegroup,
+                                    main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
 
-            if(bring_roughness == True and texcoat['rough'] != []):
-                CreateTextureLine(data['rough'], act_material, main_mat, texcoat, coat3D, notegroup,
-                                  main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
+                if (bring_emissive == True and texcoat['emissive'] != []):
+                    CreateTextureLine(data['emissive'], act_material, main_mat, texcoat, coat3D, notegroup,
+                                    main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
 
-            if(bring_normal == True and texcoat['nmap'] != []):
-                CreateTextureLine(data['nmap'], act_material, main_mat, texcoat, coat3D, notegroup,
-                                  main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
-
-            if (bring_emissive == True and texcoat['emissive'] != []):
-                CreateTextureLine(data['emissive'], act_material, main_mat, texcoat, coat3D, notegroup,
-                                  main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
-
-            if (bring_displacement == True and texcoat['displacement'] != []):
-                CreateTextureLine(data['displacement'], act_material, main_mat, texcoat, coat3D, notegroup,
-                                  main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
-            if (bring_alpha == True and texcoat['alpha'] != []):
-                CreateTextureLine(data['alpha'], act_material, main_mat, texcoat, coat3D, notegroup,
-                                  main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
+                if (bring_displacement == True and texcoat['displacement'] != []):
+                    CreateTextureLine(data['displacement'], act_material, main_mat, texcoat, coat3D, notegroup,
+                                    main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
+                if (bring_alpha == True and texcoat['alpha'] != []):
+                    CreateTextureLine(data['alpha'], act_material, main_mat, texcoat, coat3D, notegroup,
+                                    main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len)
+        except:            
+            pass
 
 
 def CreateTextureLine(type, act_material, main_mat, texcoat, coat3D, notegroup, main_material, applink_tree, out_mat, coatMat, objekti, ind, is_new, udim_textures, udim_len):
